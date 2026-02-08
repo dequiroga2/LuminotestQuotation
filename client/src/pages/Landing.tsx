@@ -25,7 +25,7 @@ export default function Landing() {
             LUMINOTEST <span className="text-blue-600">SAS</span>
           </span>
         </div>
-        <Button variant="ghost" onClick={() => window.location.href = "/api/login"}>
+        <Button variant="ghost" onClick={() => window.location.href = "/login"}>
           Iniciar Sesión
         </Button>
       </header>
@@ -57,7 +57,7 @@ export default function Landing() {
             <Button 
               size="lg" 
               className="h-14 px-8 text-lg rounded-xl shadow-xl shadow-blue-600/20 bg-blue-600 hover:bg-blue-700 hover:scale-[1.02] transition-all"
-              onClick={() => window.location.href = "/api/login"}
+              onClick={() => window.location.href = "/login"}
             >
               Iniciar Cotización
               <ArrowRight className="ml-2 w-5 h-5" />

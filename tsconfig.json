@@ -1,11 +1,4 @@
 {
-<<<<<<< HEAD
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
-=======
   "include": ["client/src/**/*", "shared/**/*", "server/**/*"],
   "exclude": ["node_modules", "build", "dist", "**/*.test.ts"],
   "compilerOptions": {
@@ -27,5 +20,4 @@
       "@shared/*": ["./shared/*"]
     }
   }
->>>>>>> cd670e9 (Extracted stack files)
 }

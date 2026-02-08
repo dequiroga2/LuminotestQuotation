@@ -1,11 +1,14 @@
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
+import { usePersistentCart } from "@/hooks/use-persistent-cart";
 import { Button } from "@/components/ui/button";
-import { LogOut, LayoutDashboard, FileText } from "lucide-react";
+import { LogOut, LayoutDashboard, ShoppingCart } from "lucide-react";
 
 export function Navbar() {
   const { user, logout } = useAuth();
   const [location] = useLocation();
+  const cart = usePersistentCart();
+  const cartCount = cart.getTotalEssays();
 
   if (!user) return null;
 
@@ -28,6 +31,17 @@ export function Navbar() {
               Dashboard
             </Button>
           </Link>
+
+          {/* Cart Icon with Badge */}
+          {cartCount > 0 && (
+            <div className="relative">
+              <ShoppingCart className="w-5 h-5 text-primary" />
+              <span className="absolute -top-2 -right-2 bg-primary text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                {cartCount}
+              </span>
+            </div>
+          )}
+
           <div className="h-6 w-px bg-border hidden sm:block"></div>
           <div className="flex items-center gap-3">
             <span className="text-sm font-medium hidden md:block text-muted-foreground">

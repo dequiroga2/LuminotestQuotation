@@ -20,6 +20,22 @@ const getOidcConfig = memoize(
 
 export function getSession() {
   const sessionTtl = 7 * 24 * 60 * 60 * 1000; // 1 week
+  
+  // If DATABASE_URL is not set, use memory store as fallback for development
+  if (!process.env.DATABASE_URL) {
+    console.log("💡 Using in-memory session store for development");
+    return session({
+      secret: process.env.SESSION_SECRET || "dev-secret-change-in-production",
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        httpOnly: true,
+        secure: false, // Allow non-secure in development
+        maxAge: sessionTtl,
+      },
+    });
+  }
+
   const pgStore = connectPg(session);
   const sessionStore = new pgStore({
     conString: process.env.DATABASE_URL,
@@ -61,6 +77,17 @@ async function upsertUser(claims: any) {
 }
 
 export async function setupAuth(app: Express) {
+  // Skip auth setup if required env vars are missing
+  if (!process.env.REPL_ID) {
+    console.log("⚠️  REPL_ID not configured. Replit Auth disabled.");
+    console.log("💡 Using mock authentication for development.");
+    return;
+  }
+
+  if (!process.env.SESSION_SECRET) {
+    throw new Error("SESSION_SECRET must be set for authentication");
+  }
+
   app.set("trust proxy", 1);
   app.use(getSession());
   app.use(passport.initialize());
@@ -131,6 +158,11 @@ export async function setupAuth(app: Express) {
 }
 
 export const isAuthenticated: RequestHandler = async (req, res, next) => {
+  // Skip auth check if not configured (development mode)
+  if (!process.env.REPL_ID) {
+    return next();
+  }
+
   const user = req.user as any;
 
   if (!req.isAuthenticated() || !user.expires_at) {
