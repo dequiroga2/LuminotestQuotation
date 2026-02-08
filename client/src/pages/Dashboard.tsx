@@ -177,13 +177,40 @@ export default function Dashboard() {
                             <Trash2 className="w-4 h-4" />
                           </Button>
                         </div>
-                        <div className="text-xs text-slate-600 space-y-1 pl-2">
+                        <div className="text-xs text-slate-600 space-y-1 pl-2 mb-3">
                           {(item.essayNames || []).map((name, i) => (
                             <div key={i} className="flex items-center gap-2">
                               <span className="text-slate-400">•</span>
                               <span className="line-clamp-1">{name}</span>
                             </div>
                           ))}
+                        </div>
+                        
+                        {/* Quantity Controls */}
+                        <div className="flex items-center gap-2 mt-3 pt-3 border-t border-slate-200">
+                          <span className="text-xs text-slate-600 font-medium">Cant:</span>
+                          <div className="flex items-center gap-1 ml-auto">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="h-6 w-6 p-0"
+                              disabled={(item.quantity || 1) <= 1}
+                              onClick={() => item.id && cart.updateQuantity(item.id, (item.quantity || 1) - 1)}
+                            >
+                              <span className="text-lg">−</span>
+                            </Button>
+                            <span className="w-8 text-center text-sm font-semibold">
+                              {item.quantity || 1}
+                            </span>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="h-6 w-6 p-0"
+                              onClick={() => item.id && cart.updateQuantity(item.id, (item.quantity || 1) + 1)}
+                            >
+                              <span className="text-lg">+</span>
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     ))}

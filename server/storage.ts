@@ -29,6 +29,8 @@ export interface IStorage extends IAuthStorage {
   // Shopping Cart
   getShoppingCart(userId: string): Promise<ShoppingCartItem[]>;
   addToCart(userId: string, item: { productId?: number; productName?: string; essayIds: number[]; essayNames: string[] }): Promise<ShoppingCartItem>;
+  getCartItem(itemId: number): Promise<ShoppingCartItem | undefined>;
+  updateCartItemQuantity(itemId: number, quantity: number): Promise<void>;
   removeFromCart(userId: string, index: number): Promise<void>;
   clearCart(userId: string): Promise<void>;
 }
@@ -229,6 +231,30 @@ export class DatabaseStorage implements IStorage {
       console.log("Item removed from database");
     } catch (err) {
       console.error("Error in storage.removeFromCart:", err);
+      throw err;
+    }
+  }
+
+  async getCartItem(itemId: number): Promise<ShoppingCartItem | undefined> {
+    try {
+      console.log("Storage.getCartItem - Getting item:", itemId);
+      const [item] = await db.select().from(shoppingCartItems).where(eq(shoppingCartItems.id, itemId));
+      return item;
+    } catch (err) {
+      console.error("Error in storage.getCartItem:", err);
+      return undefined;
+    }
+  }
+
+  async updateCartItemQuantity(itemId: number, quantity: number): Promise<void> {
+    try {
+      console.log("Storage.updateCartItemQuantity - Item:", itemId, "Quantity:", quantity);
+      await db.update(shoppingCartItems)
+        .set({ quantity })
+        .where(eq(shoppingCartItems.id, itemId));
+      console.log("Cart item quantity updated");
+    } catch (err) {
+      console.error("Error in storage.updateCartItemQuantity:", err);
       throw err;
     }
   }

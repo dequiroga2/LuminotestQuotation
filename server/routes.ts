@@ -228,6 +228,38 @@ export async function registerRoutes(
     }
   });
 
+  app.patch("/api/cart/:id/quantity", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub || 'dev-user';
+      const itemId = Number(req.params.id);
+      const { quantity } = req.body;
+      
+      if (!quantity || quantity < 1) {
+        return res.status(400).json({ error: "Quantity must be at least 1" });
+      }
+      
+      console.log("Updating quantity - User:", userId, "Item ID:", itemId, "Quantity:", quantity);
+      await storage.updateCartItemQuantity(itemId, quantity);
+      
+      const updatedItem = await storage.getCartItem(itemId);
+      if (!updatedItem) {
+        return res.status(404).json({ error: "Cart item not found" });
+      }
+      
+      const parsed = {
+        ...updatedItem,
+        essayIds: JSON.parse(updatedItem.essayIds as any),
+        essayNames: JSON.parse(updatedItem.essayNames as any)
+      };
+      
+      console.log("Quantity updated successfully");
+      res.json(parsed);
+    } catch (err: any) {
+      console.error("Error updating quantity:", err);
+      res.status(500).json({ error: err.message || "Failed to update quantity" });
+    }
+  });
+
   app.delete("/api/cart", isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user?.claims?.sub || 'dev-user';

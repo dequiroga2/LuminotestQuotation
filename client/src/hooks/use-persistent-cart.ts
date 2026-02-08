@@ -7,6 +7,7 @@ export interface CartItem {
   productName?: string;
   essayIds: number[];
   essayNames: string[];
+  quantity?: number; // Quantity of this item
 }
 
 export function usePersistentCart() {
@@ -97,8 +98,36 @@ export function usePersistentCart() {
   }, [user]);
 
   const getTotalEssays = useCallback(() => {
-    return items.reduce((total, item) => total + (item.essayIds?.length || 0), 0);
+    return items.reduce((total, item) => total + (item.essayIds?.length || 0) * (item.quantity || 1), 0);
   }, [items]);
+
+  const updateQuantity = useCallback(async (id: number, quantity: number) => {
+    if (quantity < 1) return;
+    
+    console.log("Updating item quantity - ID:", id, "Quantity:", quantity);
+    
+    try {
+      const res = await fetch(`/api/cart/${id}/quantity`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quantity })
+      });
+      
+      if (res.ok) {
+        console.log("Quantity updated successfully");
+        setItems((prev) => 
+          prev.map((item) => 
+            item.id === id ? { ...item, quantity } : item
+          )
+        );
+      } else {
+        const error = await res.text();
+        console.error("Error updating quantity:", error);
+      }
+    } catch (err) {
+      console.error("Error updating quantity:", err);
+    }
+  }, []);
 
   return {
     items,
@@ -106,6 +135,7 @@ export function usePersistentCart() {
     removeItem,
     clear,
     getTotalEssays,
+    updateQuantity,
     isLoading,
   };
 }

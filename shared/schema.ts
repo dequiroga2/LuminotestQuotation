@@ -58,6 +58,7 @@ export const shoppingCartItems = pgTable("shopping_cart_items", {
   productName: text("product_name"),
   essayIds: text("essay_ids").notNull(), // JSON array stored as text
   essayNames: text("essay_names").notNull(), // JSON array stored as text
+  quantity: integer("quantity").default(1).notNull(), // Quantity of essays in this cart item
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
