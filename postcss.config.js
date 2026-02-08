@@ -3,4 +3,8 @@ export default {
     tailwindcss: {},
     autoprefixer: {},
   },
+<<<<<<< HEAD
 };
+=======
+}
+>>>>>>> cd670e9 (Extracted stack files)
