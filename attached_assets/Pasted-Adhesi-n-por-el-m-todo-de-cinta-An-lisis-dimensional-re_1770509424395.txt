@@ -1,0 +1,167 @@
+Adhesión por el método de cinta
+
+Análisis dimensional
+
+Área de la sección transversal del conductor
+
+Aumento de temperatura
+
+Calentamiento y/o Aumento de temperatura
+
+Calentamiento y/o Aumento de temperatura (funcionamiento normal)
+
+Cámara salina (1 hora)
+
+Capacidad de apertura y cierre
+
+Características de disparo
+
+Características Eléctricas y Flujo Luminoso
+
+Tiempo de Transferencia y Tiempo de Autonomía - Duración 216 horas
+
+Dimensionales del Casquillo (E27)
+
+Distancias de aislamiento y fuga
+
+Endurancia - Incluye Evaluación de la Durabilidad del Rotulado- 10 días operando bajo condiciones de temperatura estables
+
+Evaluación de la durabilidad del rotulado
+
+Evaluación de la Durabilidad del Rotulado
+
+Fotometría: Incluye características eléctricas y flujo luminoso
+
+Fotometría: Incluye características eléctricas y flujo luminoso - Envejecimiento de 100 horas
+
+Fuerza máxima y mínima de desconexión
+
+Fugas y deformaciones (9 muestras)
+
+Grado IP1X, IP2X, IP3X, IP4X, IP5X, IP6X
+
+Grado IPX1, IPX2, IPX3, IPX4, IPX5, IPX6, IPX7
+
+Grado IP23, IP43, IP44, IP54, IP55, IP56, IP65, IP66, IP67
+
+Impedancia eléctrica
+
+Medición de resistencia a tierra
+
+Mínima duración media (MAD) (18 muestras)
+
+Operación a Alta Temperatura (70°C)
+
+Operación de cambio (Carga y Descarga)
+
+Operación normal
+
+Protección Contra Choque Eléctrico
+
+Quemador de aguja
+
+Resistencia a la compresión a alta temperatura
+
+Resistencia a la Corrosión
+
+Resistencia a la descarga superficial (tracking) CTI / PTI
+
+Resistencia a la Humedad Resistencia de Aislamiento y Rigidez Dieléctrica
+
+Resistencia a la torsión - Al inicio y a las 200 horas
+
+Resistencia a la torsión
+
+Resistencia a las Vibraciones
+
+Resistencia al calor y penetración de bola (varias temperaturas: 70°C, 75°C, 125°C)
+
+Resistencia al envejecimiento (265 horas)
+
+Resistencia al Hilo Incandescente (varias temperaturas: 650°C, 750°C, 850°C, 950°C, 960°C)
+
+Resistencia al Impacto (IK01 a IK10)
+
+Resistencia de aislamiento a tensión de impulso incluye: resistencia de aislamiento, evaluación de la durabilidad del rotulado, inspección visual y bordes cortantes
+
+Resistencia del conductor a la corriente continua
+
+Resistencia mecánica de barreras
+
+Resistencia mecánica: Impacto a baja temperatura
+
+Rigidez dieléctrica
+
+Tensión de circuito abierto (9 muestras)
+
+Verificación de dimensiones (9 muestras)
+
+Verificación de dimensiones (Inserción de clavijas)
+
+Calculos para la Proyeccion del mantenimiento del flujo luminoso
+
+Calentamiento operación normal
+
+Calentamiento y/o Aumento de temperatura (operación anormal)
+
+Características Eléctricas y Flujo Luminoso - Envejecimiento de 100 horas
+
+Características Eléctricas y Flujo Luminoso - Envejecimiento de 100 horas o 0,5% de la vida reportada
+
+Características Eléctricas
+
+Carga estática
+
+Condiciones de falla
+
+Condición de operación anormal
+
+Conductividad del Casquillo
+
+Conjunto de Ensayos (Factor de Balasto y Parámetros Eléctricos, etc.)
+
+Corriente de Fuga
+
+Dimensionales
+
+Dimensiones
+
+Distancias de aislamiento y fuga
+
+Endurancia
+
+Envejecimiento UV (1 Hora)
+
+Fragmentación
+
+Medición de la potencia en modo de espera
+
+Permanencia al rotulado
+
+Protección contra choque eléctrico
+
+Provisiones para la proteccion de puesta a tierra
+
+Resistencia a la Humedad Resistencia de Aislamiento
+
+Resistencia al hilo incandescente 650 °C / 850 °C
+
+Resistencia al impacto mecánico
+
+Resistencia a la torsión (Requisitos mecánicos para bases)
+
+Resistencia de aislamiento a tensión de impulso
+
+Resistencia mecánica de los conductores
+
+Resistencia mecánica de los terminales
+
+Rigidez Dieléctrica
+
+Suspensión, fijación y dispositivos de ajuste
+
+Tornillos y partes conductoras
+
+Torsión del Casquillo (Casquillo E40 / E27)
+
+Verificación de la resistencia al aplastamiento
