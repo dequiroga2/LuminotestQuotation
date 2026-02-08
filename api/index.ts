@@ -1,11 +1,16 @@
 import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
+import { createServer } from "http";
 import path from "path";
 import fs from "fs";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
+// Import server modules directly (without .js extension for TypeScript compilation)
+import { registerRoutes } from "../server/routes";
+
 // Create app instance
 const app = express();
+const httpServer = createServer(app);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -27,11 +32,7 @@ async function initialize() {
   try {
     console.log("Initializing application...");
     
-    // Import and register routes
-    const { registerRoutes } = await import("../server/routes.js");
-    const { createServer } = await import("http");
-    const httpServer = createServer(app);
-    
+    // Register API routes
     await registerRoutes(httpServer, app);
     console.log("Routes registered successfully");
 
@@ -80,7 +81,7 @@ async function initialize() {
 }
 
 // Vercel serverless function handler
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+module.exports = async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     await initialize();
     
@@ -102,4 +103,4 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       message: error instanceof Error ? error.message : "Unknown error"
     });
   }
-}
+};
