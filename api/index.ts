@@ -32,6 +32,12 @@ async function initialize() {
   try {
     console.log("Initializing application...");
     
+    // Check critical environment variables
+    if (!process.env.DATABASE_URL) {
+      throw new Error("DATABASE_URL environment variable is not set. Please configure it in Vercel project settings.");
+    }
+    console.log("DATABASE_URL is configured");
+    
     // Register API routes
     await registerRoutes(httpServer, app);
     console.log("Routes registered successfully");
@@ -98,9 +104,17 @@ module.exports = async function handler(req: VercelRequest, res: VercelResponse)
     });
   } catch (error) {
     console.error("Handler error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
+    const stack = error instanceof Error ? error.stack : undefined;
+    
     return res.status(500).json({ 
       error: "Internal Server Error",
-      message: error instanceof Error ? error.message : "Unknown error"
+      message,
+      details: stack,
+      env: {
+        hasDatabaseUrl: !!process.env.DATABASE_URL,
+        nodeEnv: process.env.NODE_ENV
+      }
     });
   }
 };
