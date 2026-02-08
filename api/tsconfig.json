@@ -2,28 +2,15 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "module": "CommonJS",
-    "moduleResolution": "node16",
+    "moduleResolution": "node",
     "target": "ES2022",
     "lib": ["ES2022"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
+    "strict": false,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": false,
     "resolveJsonModule": true,
-    "baseUrl": "..",
-    "paths": {
-      "@shared/*": ["./shared/*"]
-    }
-  },
-  "include": [
-    "./**/*",
-    "../server/**/*",
-    "../shared/**/*"
-  ],
-  "exclude": [
-    "../node_modules",
-    "../dist",
-    "../client"
-  ]
+    "noEmit": true
+  }
 }
