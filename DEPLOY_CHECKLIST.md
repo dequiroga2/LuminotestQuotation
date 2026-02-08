@@ -70,6 +70,9 @@ Si el build falla localmente, también fallará en Vercel.
 
 ## Solución Rápida de Problemas
 
+### ❌ Error: "Cannot find module script/build.ts"
+**Solución**: Asegúrate de que `.vercelignore` no excluya `script`, `server` o `client/src`
+
 ### ❌ Error: "DATABASE_URL must be set"
 **Solución**: Agrega la variable de entorno en Vercel → Settings → Environment Variables → Redeploy
 

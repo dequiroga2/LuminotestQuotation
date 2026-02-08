@@ -2,7 +2,8 @@ import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
 import { createServer } from "http";
 import { registerRoutes } from "../server/routes";
-import { serveStatic } from "../server/static";
+import path from "path";
+import fs from "fs";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 const app = express();
@@ -66,8 +67,10 @@ let isInitialized = false;
 const initPromise = (async () => {
   if (isInitialized) return;
   
+  // Register API routes FIRST
   await registerRoutes(httpServer, app);
 
+  // Error handler
   app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
@@ -81,8 +84,23 @@ const initPromise = (async () => {
     return res.status(status).json({ message });
   });
 
-  // Serve static files in production
-  serveStatic(app);
+  // Serve static files from dist/public (AFTER API routes)
+  const distPath = path.resolve(process.cwd(), "dist/public");
+  if (fs.existsSync(distPath)) {
+    app.use(express.static(distPath));
+    
+    // Fallback to index.html for client-side routing (catch-all must be last)
+    app.use("*", (_req, res) => {
+      const indexPath = path.join(distPath, "index.html");
+      if (fs.existsSync(indexPath)) {
+        res.sendFile(indexPath);
+      } else {
+        res.status(404).send("Not found");
+      }
+    });
+  } else {
+    console.warn(`Warning: Static files directory not found: ${distPath}`);
+  }
   
   isInitialized = true;
 })();

@@ -119,6 +119,12 @@ Una vez configurado, cada vez que hagas `git push` a tu rama `main`:
 
 ## Solución de Problemas
 
+### Error: "Cannot find module '/vercel/path0/script/build.ts'"
+
+**Causa**: Archivos necesarios para el build estaban siendo excluidos por `.vercelignore`
+
+**Solución**: Ya está corregido. El `.vercelignore` ahora solo excluye archivos innecesarios.
+
 ### Error: "DATABASE_URL must be set"
 
 - Verifica que hayas agregado la variable de entorno `DATABASE_URL` en Vercel

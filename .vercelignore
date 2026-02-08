@@ -1,17 +1,11 @@
-node_modules
-.env
-.env.local
-.DS_Store
-dist
-*.log
+# Archivos de desarrollo local
 .replit
 replit.nix
 .upm
 .cache
 .config
 .local
-client/src
-server
-script
+
+# Archivos innecesarios
 attached_assets
-database
+.DS_Store
