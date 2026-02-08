@@ -1,7 +1,7 @@
 import { db } from "./db";
 import {
   users, products, essays, quotations, quotationItems, productEssays, shoppingCartItems,
-  type User, type InsertUser, type Product, type Essay, type Quotation, type InsertQuotation,
+  type User, type Product, type Essay, type Quotation, type InsertQuotation,
   type CreateQuotationRequest, type QuotationWithItems, type ShoppingCartItem
 } from "@shared/schema";
   import { eq, desc, sql } from "drizzle-orm";
@@ -106,16 +106,6 @@ export class DatabaseStorage implements IStorage {
       `);
     } catch (err) {
       console.error("Error ensuring user:", err);
-    }
-  }
-
-  async getUser(userId: string): Promise<User | undefined> {
-    try {
-      const [user] = await db.select().from(users).where(eq(users.id, userId));
-      return user;
-    } catch (err) {
-      console.error("Error getting user:", err);
-      return undefined;
     }
   }
 
