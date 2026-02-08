@@ -1,11 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@shared/routes";
 
-export function useProducts() {
+type RegulationType = "RETILAP" | "RETIE" | "OTROS";
+
+export function useProducts(regulationType?: RegulationType) {
   return useQuery({
-    queryKey: [api.products.list.path],
+    queryKey: [api.products.list.path, regulationType],
     queryFn: async () => {
-      const res = await fetch(api.products.list.path, { credentials: "include" });
+      const url = regulationType 
+        ? `${api.products.list.path}?regulationType=${regulationType}` 
+        : api.products.list.path;
+      const res = await fetch(url, { credentials: "include" });
       if (!res.ok) throw new Error("Failed to fetch products");
       return api.products.list.responses[200].parse(await res.json());
     },

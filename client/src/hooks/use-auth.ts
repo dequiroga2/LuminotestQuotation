@@ -2,23 +2,40 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { User } from "@shared/models/auth";
 
 async function fetchUser(): Promise<User | null> {
-  const response = await fetch("/api/auth/user", {
-    credentials: "include",
-  });
+  // Check localStorage for mock user
+  const userStr = localStorage.getItem("user");
+  if (userStr) {
+    try {
+      return JSON.parse(userStr);
+    } catch {
+      localStorage.removeItem("user");
+      return null;
+    }
+  }
 
-  if (response.status === 401) {
+  // Try to fetch from API if available
+  try {
+    const response = await fetch("/api/auth/user", {
+      credentials: "include",
+    });
+
+    if (response.status === 401) {
+      return null;
+    }
+
+    if (!response.ok) {
+      return null;
+    }
+
+    return response.json();
+  } catch {
     return null;
   }
-
-  if (!response.ok) {
-    throw new Error(`${response.status}: ${response.statusText}`);
-  }
-
-  return response.json();
 }
 
 async function logout(): Promise<void> {
-  window.location.href = "/api/logout";
+  localStorage.removeItem("user");
+  window.location.href = "/login";
 }
 
 export function useAuth() {

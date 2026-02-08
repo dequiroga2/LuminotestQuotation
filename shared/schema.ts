@@ -11,6 +11,11 @@ export const products = pgTable("products", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   category: text("category").notNull(), // e.g., "Accesorios"
+  titulo: text("titulo"), // e.g., "Título 3 - Fuentes Luminosas", optional for "Por producto"
+  // These flags help with the "Reglamento" flow - which regulation applies to this product
+  isRetilap: boolean("is_retilap").default(false),
+  isRetie: boolean("is_retie").default(false),
+  isOtros: boolean("is_otros").default(false),
 });
 
 export const essays = pgTable("essays", {
@@ -20,6 +25,13 @@ export const essays = pgTable("essays", {
   // These flags help with the "Reglamento" flow defaults
   isDefaultRetilap: boolean("is_default_retilap").default(false),
   isDefaultRetie: boolean("is_default_retie").default(false),
+});
+
+// Relationship table: each product can have multiple essays
+export const productEssays = pgTable("product_essays", {
+  id: serial("id").primaryKey(),
+  productId: integer("product_id").notNull().references(() => products.id, { onDelete: "cascade" }),
+  essayId: integer("essay_id").notNull().references(() => essays.id, { onDelete: "cascade" }),
 });
 
 export const quotations = pgTable("quotations", {
@@ -38,12 +50,26 @@ export const quotationItems = pgTable("quotation_items", {
   essayId: integer("essay_id").references(() => essays.id),
 });
 
+// Shopping cart for temporary items before checkout
+export const shoppingCartItems = pgTable("shopping_cart_items", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").notNull(), // No foreign key to allow flexibility
+  productId: integer("product_id").references(() => products.id, { onDelete: "cascade" }),
+  productName: text("product_name"),
+  essayIds: text("essay_ids").notNull(), // JSON array stored as text
+  essayNames: text("essay_names").notNull(), // JSON array stored as text
+  quantity: integer("quantity").default(1).notNull(), // Quantity of essays in this cart item
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 // === SCHEMAS ===
 
 export const insertProductSchema = createInsertSchema(products).omit({ id: true });
 export const insertEssaySchema = createInsertSchema(essays).omit({ id: true });
 export const insertQuotationSchema = createInsertSchema(quotations).omit({ id: true, createdAt: true, status: true });
 export const insertQuotationItemSchema = createInsertSchema(quotationItems).omit({ id: true });
+export const insertShoppingCartItemSchema = createInsertSchema(shoppingCartItems).omit({ id: true, createdAt: true, updatedAt: true });
 
 // === TYPES ===
 
@@ -51,6 +77,7 @@ export type Product = typeof products.$inferSelect;
 export type Essay = typeof essays.$inferSelect;
 export type Quotation = typeof quotations.$inferSelect;
 export type QuotationItem = typeof quotationItems.$inferSelect;
+export type ShoppingCartItem = typeof shoppingCartItems.$inferSelect;
 
 export type InsertQuotation = z.infer<typeof insertQuotationSchema>;
 
