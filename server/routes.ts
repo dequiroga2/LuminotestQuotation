@@ -5,7 +5,7 @@ import { api } from "@shared/routes";
 import { setupAuth, registerAuthRoutes, isAuthenticated } from "./replit_integrations/auth";
 import { z } from "zod";
 
-const QUOTATION_WEBHOOK_URL = "https://automation.luminotest.com/webhook-test/cotizacionesLuminotest";
+const QUOTATION_WEBHOOK_URL = "https://automation.luminotest.com/webhook/cotizacionesLuminotest";
 
 export async function registerRoutes(
   httpServer: Server,
