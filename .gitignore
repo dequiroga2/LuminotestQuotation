@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+# Logs
 logs
 *.log
 npm-debug.log*
@@ -7,11 +7,16 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+
+# Build outputs
 dist
 dist-ssr
+server/public
 *.local
 
+# IDE
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -22,20 +27,14 @@ dist-ssr
 *.sln
 *.sw?
 
-=======
-node_modules
-dist
-.DS_Store
->>>>>>> b391b20883e6ea75f10d13caf8a3c3f24ed3891e
-server/public
+# Misc
 vite.config.ts.*
 *.tar.gz
 
 # Environment variables
 .env
 .env.local
-<<<<<<< HEAD
 .env.*.local
-=======
-.env.*.local
->>>>>>> b391b20883e6ea75f10d13caf8a3c3f24ed3891e
+
+# Vercel
+.vercel

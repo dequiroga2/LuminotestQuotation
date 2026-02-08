@@ -107,6 +107,19 @@ npm run db:push  # Sincronizar esquema con BD (Drizzle)
 
 El proyecto usa hot-reload tanto en frontend como backend. Los cambios se reflejan automáticamente.
 
+## 🌐 Despliegue en Vercel
+
+Para desplegar esta aplicación en Vercel:
+
+1. **Lee la guía completa**: [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md)
+2. **Requisitos**: Base de datos PostgreSQL en producción (Supabase, Neon, Railway)
+3. **Deploy rápido**: 
+   - Conecta tu repo de GitHub con Vercel
+   - Configura las variables de entorno (`DATABASE_URL`, `SESSION_SECRET`)
+   - Vercel automáticamente detectará la configuración
+
+Ver [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md) para instrucciones paso a paso.
+
 ---
 
 **LUMINOTEST SAS** - Sistema de Cotizaciones © 2026
