@@ -9,6 +9,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": false,
     "skipLibCheck": true,
+    "noImplicitAny": false,
     "forceConsistentCasingInFileNames": false,
     "resolveJsonModule": true,
     "noEmit": true

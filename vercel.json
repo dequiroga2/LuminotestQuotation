@@ -2,9 +2,9 @@
   "version": 2,
   "buildCommand": "npm run build",
   "installCommand": "npm install",
-  "ignoreCommand": "exit 0",
+  "framework": null,
   "functions": {
-    "api/index.ts": {
+    "api/index.js": {
       "memory": 1024,
       "maxDuration": 10
     }
@@ -15,5 +15,8 @@
       "src": "/(.*)",
       "dest": "/api/index"
     }
-  ]
+  ],
+  "env": {
+    "SKIP_INSTALL_CHECK": "true"
+  }
 }
