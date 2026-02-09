@@ -4,6 +4,7 @@ import { rm, readFile } from "fs/promises";
 
 // server deps to bundle to reduce openat(2) syscalls
 // which helps cold start times
+// Note: firebase-admin is NOT bundled because it has complex native dependencies
 const allowlist = [
   "@google/generative-ai",
   "axios",
@@ -15,7 +16,6 @@ const allowlist = [
   "express",
   "express-rate-limit",
   "express-session",
-  "firebase-admin",
   "jsonwebtoken",
   "memorystore",
   "multer",
