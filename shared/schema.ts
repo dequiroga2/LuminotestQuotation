@@ -74,12 +74,18 @@ export const insertShoppingCartItemSchema = createInsertSchema(shoppingCartItems
 // === TYPES ===
 
 export type Product = typeof products.$inferSelect;
+export type InsertProduct = typeof products.$inferInsert;
+
 export type Essay = typeof essays.$inferSelect;
+export type InsertEssay = typeof essays.$inferInsert;
+
 export type Quotation = typeof quotations.$inferSelect;
 export type QuotationItem = typeof quotationItems.$inferSelect;
 export type ShoppingCartItem = typeof shoppingCartItems.$inferSelect;
 
-export type InsertQuotation = z.infer<typeof insertQuotationSchema>;
+export type InsertQuotation = typeof quotations.$inferInsert;
+export type InsertQuotationItem = typeof quotationItems.$inferInsert;
+export type InsertShoppingCartItem = typeof shoppingCartItems.$inferInsert;
 
 // Full quotation request with items
 export const createQuotationRequestSchema = insertQuotationSchema.extend({
