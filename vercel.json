@@ -2,19 +2,17 @@
   "version": 2,
   "buildCommand": "npm run build",
   "installCommand": "npm install",
-  "framework": null,
+  "outputDirectory": "dist/public",
   "functions": {
     "api/index.ts": {
-      "memory": 3008,
       "maxDuration": 30
     }
   },
   "routes": [
     { "handle": "filesystem" },
-    {
-      "src": "/(.*)",
-      "dest": "/api/index"
-    }
-  ],
-  "outputDirectory": "dist/public"
+
+    { "src": "/api/(.*)", "dest": "/api/index" },
+
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
 }
