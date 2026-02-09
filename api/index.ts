@@ -65,7 +65,7 @@ async function initialize() {
       app.use(express.static(distPath));
       
       // Fallback to index.html for client-side routing (catch-all must be last)
-      app.use("*", (_req, res) => {
+      app.get(/^(?!\/api).*/, (_req, res) => {
         const indexPath = path.join(distPath, "index.html");
         if (fs.existsSync(indexPath)) {
           res.sendFile(indexPath);
