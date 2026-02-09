@@ -31,23 +31,20 @@ export async function setupVite(server: Server, app: Express) {
 
   app.use(vite.middlewares);
 
-  app.use("/{*path}", async (req, res, next) => {
+  // ✅ Catch-all válido + evita /api
+  app.use(/^(?!\/api).*/, async (req, res, next) => {
     const url = req.originalUrl;
 
     try {
-      const clientTemplate = path.resolve(
-        import.meta.dirname,
-        "..",
-        "client",
-        "index.html",
-      );
+      // ✅ CommonJS friendly (sin import.meta)
+      const clientTemplate = path.resolve(process.cwd(), "client", "index.html");
 
-      // always reload the index.html file from disk incase it changes
       let template = await fs.promises.readFile(clientTemplate, "utf-8");
       template = template.replace(
         `src="/src/main.tsx"`,
         `src="/src/main.tsx?v=${nanoid()}"`,
       );
+
       const page = await vite.transformIndexHtml(url, template);
       res.status(200).set({ "Content-Type": "text/html" }).end(page);
     } catch (e) {
@@ -55,4 +52,6 @@ export async function setupVite(server: Server, app: Express) {
       next(e);
     }
   });
+
+
 }
