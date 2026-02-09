@@ -6,10 +6,9 @@ replit.nix
 .config
 .local
 
-# Usar solo JavaScript para evitar validación de TypeScript en Vercel
-api/index.ts
-api/tsconfig.json
-
 # Archivos innecesarios
 attached_assets
 .DS_Store
+*.md
+!DEPLOYMENT.md
+!DEPLOY_QUICK.md
