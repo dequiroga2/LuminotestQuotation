@@ -3,7 +3,7 @@ import {
   users, products, essays, quotations, quotationItems, productEssays, shoppingCartItems,
   type User, type Product, type Essay, type Quotation, type InsertQuotation,
   type CreateQuotationRequest, type QuotationWithItems, type ShoppingCartItem
-} from "@shared/schema";
+} from "../shared/schema";
   import { eq, desc, sql } from "drizzle-orm";
 import { authStorage, type IAuthStorage } from "./replit_integrations/auth/storage";
 
