@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useAuth } from "./use-auth";
+import { useFirebaseAuth } from "./use-firebase-auth";
 
 export interface CartItem {
   id?: number; // Database ID for removal
@@ -11,20 +11,26 @@ export interface CartItem {
 }
 
 export function usePersistentCart() {
-  const { user } = useAuth();
+  const { user, token } = useFirebaseAuth();
   const [items, setItems] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   // Load cart from backend on mount
   useEffect(() => {
-    loadCart();
-  }, [user?.id]);
+    if (token) {
+      loadCart();
+    }
+  }, [token]);
 
   const loadCart = useCallback(async () => {
+    if (!token) return;
+    
     setIsLoading(true);
-    console.log("Loading cart for user:", user?.id || 'dev-user');
+    console.log("Loading cart for user:", user?.uid || 'dev-user');
     try {
-      const res = await fetch("/api/cart");
+      const res = await fetch("/api/cart", {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
       if (res.ok) {
         const data = await res.json();
         console.log("Cart loaded successfully:", data.length, "items");
@@ -38,15 +44,20 @@ export function usePersistentCart() {
     } finally {
       setIsLoading(false);
     }
-  }, [user]);
+  }, [user, token]);
 
   const addItem = useCallback(async (item: Omit<CartItem, "id">) => {
+    if (!token) return;
+    
     console.log("Adding item to cart:", item);
 
     try {
       const res = await fetch("/api/cart", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
         body: JSON.stringify(item),
       });
 
@@ -61,13 +72,18 @@ export function usePersistentCart() {
     } catch (err) {
       console.error("Error adding to cart:", err);
     }
-  }, []);
+  }, [token]);
 
   const removeItem = useCallback(async (id: number) => {
+    if (!token) return;
+    
     console.log("Removing item from cart:", id);
 
     try {
-      const res = await fetch(`/api/cart/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/cart/${id}`, { 
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${token}` }
+      });
       if (res.ok) {
         console.log("Item removed successfully:", id);
         setItems((prev) => prev.filter((i) => i.id !== id));
@@ -78,13 +94,18 @@ export function usePersistentCart() {
     } catch (err) {
       console.error("Error removing from cart:", err);
     }
-  }, []);
+  }, [token]);
 
   const clear = useCallback(async () => {
-    console.log("Clearing cart for user:", user?.id || 'dev-user');
+    if (!token) return;
+    
+    console.log("Clearing cart for user:", user?.uid || 'dev-user');
 
     try {
-      const res = await fetch("/api/cart", { method: "DELETE" });
+      const res = await fetch("/api/cart", { 
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${token}` }
+      });
       if (res.ok) {
         console.log("Cart cleared successfully");
         setItems([]);
@@ -95,21 +116,24 @@ export function usePersistentCart() {
     } catch (err) {
       console.error("Error clearing cart:", err);
     }
-  }, [user]);
+  }, [user, token]);
 
   const getTotalEssays = useCallback(() => {
     return items.reduce((total, item) => total + (item.essayIds?.length || 0) * (item.quantity || 1), 0);
   }, [items]);
 
   const updateQuantity = useCallback(async (id: number, quantity: number) => {
-    if (quantity < 1) return;
+    if (quantity < 1 || !token) return;
     
     console.log("Updating item quantity - ID:", id, "Quantity:", quantity);
     
     try {
       const res = await fetch(`/api/cart/${id}/quantity`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
         body: JSON.stringify({ quantity })
       });
       
@@ -117,7 +141,7 @@ export function usePersistentCart() {
         console.log("Quantity updated successfully");
         setItems((prev) => 
           prev.map((item) => 
-            item.id === id ? { ...item, quantity } : item
+            item.id === id ?{ ...item, quantity } : item
           )
         );
       } else {
@@ -127,7 +151,7 @@ export function usePersistentCart() {
     } catch (err) {
       console.error("Error updating quantity:", err);
     }
-  }, []);
+  }, [token]);
 
   return {
     items,

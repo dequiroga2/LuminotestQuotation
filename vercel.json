@@ -5,8 +5,8 @@
   "framework": null,
   "functions": {
     "api/index.js": {
-      "memory": 1024,
-      "maxDuration": 10
+      "memory": 3008,
+      "maxDuration": 30
     }
   },
   "routes": [
@@ -16,7 +16,5 @@
       "dest": "/api/index"
     }
   ],
-  "env": {
-    "SKIP_INSTALL_CHECK": "true"
-  }
+  "outputDirectory": "dist/public"
 }

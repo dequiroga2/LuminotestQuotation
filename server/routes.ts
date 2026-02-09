@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { api } from "@shared/routes";
-import { setupAuth, registerAuthRoutes, isAuthenticated } from "./replit_integrations/auth";
+import { firebaseAuth, isAuthenticated } from "./firebase-middleware";
 import { z } from "zod";
 
 const QUOTATION_WEBHOOK_URL = "https://automation.luminotest.com/webhook/cotizacionesLuminotest";
@@ -11,10 +11,8 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
-  // Setup Auth
-  await setupAuth(app);
-  registerAuthRoutes(app);
-
+  // Firebase Auth Middleware (applied in index.ts)
+  
   // Products
   app.get(api.products.list.path, async (req, res) => {
     const products = await storage.getProducts();
@@ -66,7 +64,7 @@ export async function registerRoutes(
   app.post(api.quotations.create.path, isAuthenticated, async (req: any, res) => {
     try {
       const input = api.quotations.create.input.parse(req.body);
-      const userId = req.user?.claims?.sub || 'dev-user'; // Replit Auth ID or dev user
+      const userId = req.user?.uid || 'dev-user'; // Firebase UID
       await storage.ensureUser(userId);
       const quotation = await storage.createQuotation(userId, input);
         await storage.incrementQuotations(userId);
@@ -145,7 +143,7 @@ export async function registerRoutes(
   });
 
   app.get(api.quotations.list.path, isAuthenticated, async (req: any, res) => {
-    const userId = req.user?.claims?.sub || 'dev-user';
+    const userId = req.user?.uid || 'dev-user';
     const quotations = await storage.getQuotations(userId);
     res.json(quotations);
   });
@@ -161,7 +159,7 @@ export async function registerRoutes(
   // Shopping Cart
   app.get("/api/cart", isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user?.claims?.sub || 'dev-user';
+      const userId = req.user?.uid || 'dev-user';
       console.log("Getting cart for user:", userId);
       
       const cartItems = await storage.getShoppingCart(userId);
@@ -183,7 +181,7 @@ export async function registerRoutes(
 
   app.post("/api/cart", isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user?.claims?.sub || 'dev-user';
+      const userId = req.user?.uid || 'dev-user';
       const item = req.body;
       
       console.log("Adding to cart - User:", userId, "Item:", item);
@@ -215,7 +213,7 @@ export async function registerRoutes(
 
   app.delete("/api/cart/:id", isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user?.claims?.sub || 'dev-user';
+      const userId = req.user?.uid || 'dev-user';
       const itemId = Number(req.params.id);
       console.log("Removing item from cart - User:", userId, "Item ID:", itemId);
       
@@ -230,7 +228,7 @@ export async function registerRoutes(
 
   app.patch("/api/cart/:id/quantity", isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user?.claims?.sub || 'dev-user';
+      const userId = req.user?.uid || 'dev-user';
       const itemId = Number(req.params.id);
       const { quantity } = req.body;
       
@@ -262,7 +260,7 @@ export async function registerRoutes(
 
   app.delete("/api/cart", isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user?.claims?.sub || 'dev-user';
+      const userId = req.user?.uid || 'dev-user';
       console.log("Clearing cart for user:", userId);
       
       await storage.clearCart(userId);

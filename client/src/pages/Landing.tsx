@@ -1,14 +1,14 @@
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/use-auth";
+import { useFirebaseAuth } from "@/hooks/use-firebase-auth";
 import { Redirect } from "wouter";
 import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 export default function Landing() {
-  const { user, isLoading } = useAuth();
+  const { isAuthenticated, loading } = useFirebaseAuth();
 
-  if (isLoading) return <div className="h-screen w-full flex items-center justify-center bg-slate-50">Cargando...</div>;
-  if (user) return <Redirect to="/dashboard" />;
+  if (loading) return <div className="h-screen w-full flex items-center justify-center bg-slate-50">Cargando...</div>;
+  if (isAuthenticated) return <Redirect to="/dashboard" />;
 
   return (
     <div className="min-h-screen bg-slate-50 relative overflow-hidden flex flex-col">

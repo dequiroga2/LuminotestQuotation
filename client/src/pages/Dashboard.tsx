@@ -1,4 +1,4 @@
-import { useAuth } from "@/hooks/use-auth";
+import { useFirebaseAuth } from "@/hooks/use-firebase-auth";
 import { usePersistentCart } from "@/hooks/use-persistent-cart";
 import { useCreateQuotation } from "@/hooks/use-quotations";
 import { Link, useLocation } from "wouter";
@@ -38,7 +38,7 @@ const options = [
 ];
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  const { user } = useFirebaseAuth();
   const cart = usePersistentCart();
   const { mutate: createQuotation, isPending } = useCreateQuotation();
   const [_, setLocation] = useLocation();

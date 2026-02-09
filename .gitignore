@@ -38,3 +38,4 @@ vite.config.ts.*
 
 # Vercel
 .vercel
+serviceAccountKey.json

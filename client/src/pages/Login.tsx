@@ -6,45 +6,60 @@ import { useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { LogIn } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { signIn, signUp } from "@/lib/firebase";
+import { useFirebaseAuth } from "@/hooks/use-firebase-auth";
 
 export default function Login() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const { user, loading: authLoading } = useFirebaseAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [mode, setMode] = useState<"login" | "register">("login");
+
+  // Redirect if already authenticated
+  if (user && !authLoading) {
+    setLocation("/dashboard");
+    return null;
+  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulación de login (decorativo por ahora)
-    setTimeout(() => {
-      const mockUser = {
-        id: "mock-user-id",
-        email: email,
-        username: email.split("@")[0],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-
-      localStorage.setItem("user", JSON.stringify(mockUser));
+    try {
+      if (mode === "login") {
+        await signIn(email, password);
+        toast({
+          title: "¡Bienvenido!",
+          description: "Has iniciado sesión correctamente",
+        });
+      } else {
+        await signUp(email, password);
+        toast({
+          title: "¡Cuenta creada!",
+          description: "Tu cuenta ha sido creada exitosamente",
+        });
+      }
       
+      setLocation("/dashboard");
+    } catch (error: any) {
+      console.error("Auth error:", error);
       toast({
-        title: "¡Bienvenido!",
-        description: "Has iniciado sesión correctamente",
+        title: "Error",
+        description: mode === "login" 
+          ? "Email o contraseña incorrectos" 
+          : "No pudimos crear tu cuenta. El email ya está en uso.",
+        variant: "destructive",
       });
-
+    } finally {
       setIsLoading(false);
-      window.location.href = "/dashboard";
-    }, 1000);
+    }
   };
 
   const handleRegister = () => {
-    toast({
-      title: "Registro",
-      description: "La funcionalidad de registro estará disponible próximamente",
-    });
+    setMode(mode === "login" ? "register" : "login");
   };
 
   return (
@@ -116,12 +131,12 @@ export default function Login() {
                 {isLoading ? (
                   <span className="flex items-center gap-2">
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Iniciando...
+                    {mode === "login" ? "Iniciando..." : "Creando cuenta..."}
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
                     <LogIn className="w-5 h-5" />
-                    Iniciar Sesión
+                    {mode === "login" ? "Iniciar Sesión" : "Crear Cuenta"}
                   </span>
                 )}
               </Button>
@@ -129,12 +144,12 @@ export default function Login() {
 
             <div className="mt-6 text-center">
               <p className="text-slate-600 text-sm">
-                ¿No tienes cuenta?{" "}
+                {mode === "login" ? "¿No tienes cuenta?" : "¿Ya tienes cuenta?"}{" "}
                 <button
                   onClick={handleRegister}
                   className="text-blue-600 hover:text-blue-700 font-semibold hover:underline"
                 >
-                  Regístrate
+                  {mode === "login" ? "Regístrate" : "Inicia sesión"}
                 </button>
               </p>
             </div>

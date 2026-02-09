@@ -11,13 +11,13 @@ import Reglamento from "@/pages/Reglamento";
 import Producto from "@/pages/Producto";
 import Ensayo from "@/pages/Ensayo";
 import QuotationSuccess from "@/pages/QuotationSuccess";
-import { useAuth } from "@/hooks/use-auth";
+import { useFirebaseAuth } from "@/hooks/use-firebase-auth";
 import { Loader2 } from "lucide-react";
 
 function ProtectedRoute({ component: Component, ...rest }: any) {
-  const { user, isLoading } = useAuth();
+  const { isAuthenticated, loading } = useFirebaseAuth();
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="h-screen w-full flex items-center justify-center bg-slate-50">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -25,7 +25,7 @@ function ProtectedRoute({ component: Component, ...rest }: any) {
     );
   }
 
-  if (!user) {
+  if (!isAuthenticated) {
     return <Redirect to="/login" />;
   }
 

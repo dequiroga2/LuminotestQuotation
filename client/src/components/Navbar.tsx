@@ -1,16 +1,17 @@
 import { Link, useLocation } from "wouter";
-import { useAuth } from "@/hooks/use-auth";
+import { useFirebaseAuth } from "@/hooks/use-firebase-auth";
+import { signOut } from "@/lib/firebase";
 import { usePersistentCart } from "@/hooks/use-persistent-cart";
 import { Button } from "@/components/ui/button";
 import { LogOut, LayoutDashboard, ShoppingCart } from "lucide-react";
 
 export function Navbar() {
-  const { user, logout } = useAuth();
+  const { user, isAuthenticated } = useFirebaseAuth();
   const [location] = useLocation();
   const cart = usePersistentCart();
   const cartCount = cart.getTotalEssays();
 
-  if (!user) return null;
+  if (!isAuthenticated) return null;
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -45,9 +46,9 @@ export function Navbar() {
           <div className="h-6 w-px bg-border hidden sm:block"></div>
           <div className="flex items-center gap-3">
             <span className="text-sm font-medium hidden md:block text-muted-foreground">
-              {user.firstName ? `Hola, ${user.firstName}` : user.email}
+              {user?.displayName || user?.email || "Usuario"}
             </span>
-            <Button variant="outline" size="sm" onClick={() => logout()} className="gap-2">
+            <Button variant="outline" size="sm" onClick={() => signOut()} className="gap-2">
               <LogOut className="w-4 h-4" />
               <span className="hidden sm:inline">Salir</span>
             </Button>
