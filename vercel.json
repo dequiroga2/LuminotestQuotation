@@ -3,6 +3,7 @@
   "buildCommand": "npm run build",
   "installCommand": "npm install",
   "framework": null,
+  "ignoreCommand": "exit 0",
   "functions": {
     "api/index.ts": {
       "memory": 3008,
